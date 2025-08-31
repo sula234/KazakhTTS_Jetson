@@ -55,6 +55,15 @@ RUN pip3 install --no-cache-dir grpcio grpcio-tools
 # after cloning ESPnet
 ENV PYTHONPATH=/workspace/espnet:$PYTHONPATH
 
+RUN python3 -m pip install nltk && \
+    python3 - <<'PY'
+import nltk
+for pkg in ["averaged_perceptron_tagger", "cmudict"]:
+    nltk.download(pkg, download_dir="/usr/local/share/nltk_data")
+PY
+ENV NLTK_DATA=/usr/local/share/nltk_data
+
+
 
 # Helpful message
 CMD echo $'Container ready (Jetson).\nNext:\n  cd /workspace/espnet/egs2/Kazakh_TTS/tts1\n  python3 synthesize.py --text "ассаляму алейкум ва рахматуллахи ва баракатуху"'

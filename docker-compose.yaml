@@ -11,14 +11,14 @@ services:
               count: all
               capabilities: [gpu]
     ports:
-      - "50051:50051"
+      - "50052:50052"
     volumes:
       - ./grpc_server:/workspace/grpc_server
       - ./models:/workspace/models
     environment:
       # Adjust these three to your real files:
-      - TTS_CONFIG=/workspace/models/female1/config.yaml
-      - TTS_MODEL=/workspace/models/female1/train.loss.ave_5best.pth
+      - TTS_CONFIG=/workspace/models/female1/exp/tts_train_raw_char/config.yaml
+      - TTS_MODEL=/workspace/models/female1/exp/tts_train_raw_char/train.loss.ave_5best.pth
       - VOCODER_CKPT=/workspace/models/vocoders/female1/checkpoint-400000steps.pkl
     working_dir: /workspace
     command: bash -lc "python3 -m grpc_server.server"

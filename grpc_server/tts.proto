@@ -7,7 +7,7 @@ service TTS {
 }
 
 message SynthesisRequest {
-  string text = 1;          // e.g. "Сәлем әлем"
+  string text = 1;          
   int32  sample_rate = 2;   // optional override (default 22050)
 }
 

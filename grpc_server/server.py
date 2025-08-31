@@ -7,7 +7,7 @@ from espnet2.bin.tts_inference import Text2Speech
 from parallel_wavegan.utils import load_model
 import torch, soundfile as sf
 
-from grpc_server import tts_pb2, tts_pb2_grpc
+from . import tts_pb2, tts_pb2_grpc
 
 # ---- Model paths (mounted under /workspace/models) ----
 TTS_CONFIG  = os.environ.get("TTS_CONFIG",  "/workspace/models/config.yaml")
@@ -54,9 +54,9 @@ def serve():
     ]
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=2), options=opts)
     tts_pb2_grpc.add_TTSServicer_to_server(TTSService(), server)
-    server.add_insecure_port("[::]:50051")
+    server.add_insecure_port("[::]:50052")
     server.start()
-    print("gRPC TTS server listening on :50051")
+    print("gRPC TTS server listening on :50052")
     server.wait_for_termination()
 
 if __name__ == "__main__":
