@@ -5,7 +5,6 @@ import grpc
 from . import tts_pb2 as tts__pb2
 
 
-
 class TTSStub(object):
     """Missing associated documentation comment in .proto file."""
 
@@ -15,18 +14,18 @@ class TTSStub(object):
         Args:
             channel: A grpc.Channel.
         """
-        self.Synthesize = channel.unary_unary(
+        self.Synthesize = channel.stream_stream(
                 '/tts.TTS/Synthesize',
                 request_serializer=tts__pb2.SynthesisRequest.SerializeToString,
-                response_deserializer=tts__pb2.AudioResponse.FromString,
+                response_deserializer=tts__pb2.AudioChunk.FromString,
                 )
 
 
 class TTSServicer(object):
     """Missing associated documentation comment in .proto file."""
 
-    def Synthesize(self, request, context):
-        """Simple request/response: send text, get one WAV back.
+    def Synthesize(self, request_iterator, context):
+        """client sends one request (or a few), server streams audio frames back
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -35,10 +34,10 @@ class TTSServicer(object):
 
 def add_TTSServicer_to_server(servicer, server):
     rpc_method_handlers = {
-            'Synthesize': grpc.unary_unary_rpc_method_handler(
+            'Synthesize': grpc.stream_stream_rpc_method_handler(
                     servicer.Synthesize,
                     request_deserializer=tts__pb2.SynthesisRequest.FromString,
-                    response_serializer=tts__pb2.AudioResponse.SerializeToString,
+                    response_serializer=tts__pb2.AudioChunk.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -51,7 +50,7 @@ class TTS(object):
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod
-    def Synthesize(request,
+    def Synthesize(request_iterator,
             target,
             options=(),
             channel_credentials=None,
@@ -61,8 +60,8 @@ class TTS(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/tts.TTS/Synthesize',
+        return grpc.experimental.stream_stream(request_iterator, target, '/tts.TTS/Synthesize',
             tts__pb2.SynthesisRequest.SerializeToString,
-            tts__pb2.AudioResponse.FromString,
+            tts__pb2.AudioChunk.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
