@@ -1,0 +1,19 @@
+services:
+  kazakh_tts:
+    container_name: kazakh_tts
+    image: espnet-jetson:jp512    # <-- the image you built
+    runtime: nvidia
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    volumes:
+      - ./models:/workspace/models
+    working_dir: /workspace
+    stdin_open: true   # equivalent to docker run -i
+    tty: true          # equivalent to docker run -t
+    environment:
+      - PYTHONPATH=/workspace/espnet

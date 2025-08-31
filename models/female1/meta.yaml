@@ -1,0 +1,8 @@
+espnet: 0.9.8
+files:
+  model_file: exp/tts_train_raw_char/train.loss.ave_5best.pth
+python: "3.6.9 |Anaconda, Inc.| (default, Jul 30 2019, 19:07:31) \n[GCC 7.3.0]"
+timestamp: 1618652226.184583
+torch: 1.4.0
+yaml_files:
+  train_config: exp/tts_train_raw_char/config.yaml
