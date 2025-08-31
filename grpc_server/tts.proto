@@ -1,0 +1,18 @@
+syntax = "proto3";
+package tts;
+
+service TTS {
+  // Simple request/response: send text, get one WAV back.
+  rpc Synthesize (SynthesisRequest) returns (AudioResponse);
+}
+
+message SynthesisRequest {
+  string text = 1;          // e.g. "Сәлем әлем"
+  int32  sample_rate = 2;   // optional override (default 22050)
+}
+
+message AudioResponse {
+  bytes wav = 1;            // full WAV file bytes (PCM16)
+  int32 sample_rate = 2;    // actual SR used
+  string note = 3;          // optional info msg
+}

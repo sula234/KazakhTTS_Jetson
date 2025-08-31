@@ -50,6 +50,8 @@ RUN pip3 install --no-deps \
     phonemizer jamo pykakasi jieba unidecode inflect \
     torch_complex g2p_en more_itertools pyworld jaconv
 
+RUN pip3 install --no-cache-dir grpcio grpcio-tools
+
 # after cloning ESPnet
 ENV PYTHONPATH=/workspace/espnet:$PYTHONPATH
 
